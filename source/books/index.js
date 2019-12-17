@@ -3,7 +3,7 @@ const fs = require("fs-extra")
 const path = require("path")
 const { check, validationResult, sanitizeBody } = require("express-validator")
 
-const booksJsonPath = path.join(__dirname, "books.json")
+const booksJsonPath = path.join(__dirname, "index.json")
 
 const getBooks = async()=>{
     const buffer = await fs.readFile(booksJsonPath);
@@ -24,7 +24,7 @@ router.get("/:asin", async (req, res)=>{
     else
         res.status(404).send("Not found")
 })
-
+// below are all validators
 router.post("/",
     [check("asin").exists().withMessage("You should specify the asin"),
     check("title").exists().withMessage("Title is required"),
@@ -54,6 +54,13 @@ router.put("/:asin", async(req, res)=>{
     {
         const position = books.indexOf(book);
         const bookUpdated = Object.assign(book, req.body)
+        // The Object.assign() method copies all enumerable own properties from one or more source objects to a target object. It returns the target object.
+        //const target = { a: 1, b: 2 };
+       // const source = { b: 4, c: 5 };
+       //const returnedTarget = Object.assign(target, source);
+       //console.log(returnedTarget);
+       // expected output: Object { a: 1, b: 4, c: 5 }
+        
         books[position] = bookUpdated;
         await fs.writeFile(booksJsonPath, JSON.stringify(books))
         res.status(200).send("Updated")
