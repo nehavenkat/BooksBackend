@@ -3,8 +3,7 @@ const fs = require("fs-extra")
 const path = require("path")
 const { check, validationResult, sanitizeBody } = require("express-validator")
 
-const booksJsonPath = path.join(__dirname, "index.json")
-
+const booksJsonPath = path.join(__dirname, "books.json")
 const getBooks = async()=>{
     const buffer = await fs.readFile(booksJsonPath);
     return JSON.parse(buffer.toString())
